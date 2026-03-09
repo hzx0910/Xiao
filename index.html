@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>小了个米</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1>小了个米</h1>
+      <div class="controls">
+        <select id="levelSelect">
+          <option value="1">第一关 · 新手教学</option>
+          <option value="2" selected>第二关 · 地狱挑战</option>
+        </select>
+        <button id="btnStart" class="primary-btn">开始挑战</button>
+      </div>
+    </header>
+    <main class="stage">
+      <div class="game-container">
+        <canvas id="game" width="960" height="960"></canvas>
+      </div>
+      <aside class="panel">
+        <div class="tools-grid">
+          <button class="tool-btn" id="tool-remove3" title="移出前3张">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path fill="currentColor" d="M7 14l5-5 5 5H7z"/>
+            </svg>
+            <span>移出</span>
+          </button>
+          <button class="tool-btn" id="tool-undo" title="撤回一步">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.5 8C9.85 8 7.45 8.99 5.6 10.6L2 7V16H11L7.38 12.38C8.77 11.22 10.54 10.5 12.5 10.5C16.04 10.5 19.05 12.81 20.1 16L22.47 15.22C21.08 11.03 17.15 8 12.5 8Z"/></svg>
+            <span>撤回</span>
+          </button>
+          <button class="tool-btn" id="tool-shuffle" title="打乱顺序">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+            <span>洗牌</span>
+          </button>
+          <button class="tool-btn" id="tool-revive" title="复活">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
+            <span>复活</span>
+          </button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="shareModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>分享解锁</h3>
+      <p>分享给好友/群后可使用该道具（模拟）。</p>
+      <button id="btnShareConfirm">已分享</button>
+      <button id="btnShareCancel">取消</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

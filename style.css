@@ -1,0 +1,44 @@
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#1a1a1a;color:#fff;overflow:hidden}
+.app{display:flex;flex-direction:column;height:100vh}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1);z-index:100}
+.topbar h1{margin:0;font-size:22px;background:linear-gradient(45deg,#ff6b00,#ff9e00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:bold}
+.controls{display:flex;align-items:center;gap:12px}
+#levelSelect{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:6px 12px;border-radius:6px;outline:none}
+.primary-btn{background:#ff6b00;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-weight:600;transition:all 0.2s}
+.primary-btn:hover{background:#ff8533;transform:translateY(-1px)}
+
+.stage{flex:1;display:flex;gap:20px;padding:20px;background:radial-gradient(circle at center,#2c2c2c 0%,#1a1a1a 100%);justify-content:center;align-items:center}
+.game-container{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+#game{background:transparent;border-radius:8px;touch-action:manipulation;max-width:100%;height:auto}
+
+.panel{width:240px;display:flex;flex-direction:column;gap:16px}
+.info-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px}
+.info-card h3{margin:0 0 12px 0;font-size:16px;color:rgba(255,255,255,0.6)}
+.stat-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px}
+.stat-row strong{color:#ff6b00}
+
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool-btn{display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 0;color:#fff;cursor:pointer;transition:all 0.2s;outline:none}
+.tool-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);transform:translateY(-2px)}
+.tool-btn svg{width:28px;height:28px;color:#ff6b00}
+.tool-btn span{font-size:13px;font-weight:500}
+.tool-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);z-index:1000}
+.modal.hidden{display:none}
+.modal-content{background:#2a2a2a;padding:24px;border-radius:16px;min-width:300px;display:flex;flex-direction:column;gap:16px;border:1px solid rgba(255,255,255,0.1);text-align:center}
+.modal-content h3{margin:0;color:#ff6b00}
+.modal-content button{padding:10px;border-radius:8px;cursor:pointer;font-weight:600}
+#btnShareConfirm{background:#ff6b00;color:#fff;border:none}
+#btnShareCancel{background:transparent;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2)}
+
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:#ff6b00;color:#fff;padding:10px 20px;border-radius:30px;opacity:0;transition:all .3s;box-shadow:0 4px 15px rgba(255,107,0,0.3);z-index:2000}
+.toast.show{opacity:1;bottom:60px}
+
+@media (max-width: 1100px){
+  .stage{flex-direction:column;overflow-y:auto;padding-top:80px}
+  .panel{width:100%;max-width:600px;flex-direction:row}
+  .info-card{flex:1}
+  .tools-grid{flex:2;grid-template-columns:repeat(4,1fr)}
+}
+
