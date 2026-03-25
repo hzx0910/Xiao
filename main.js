@@ -115,7 +115,7 @@ class Game {
   }
   buildLevel2() {
     const total = 750;
-    const kinds = shuffle([...KINDS]).slice(0, 10); // Use 12 random kinds
+    const kinds = shuffle([...KINDS]).slice(0, 8); // Use 12 random kinds
     const targetTriples = total / 3;
     const baseTriple = Math.floor(targetTriples / kinds.length); // 31
     let remainTriples = targetTriples - baseTriple * kinds.length; // 250 - 31*8 = -?
