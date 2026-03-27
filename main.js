@@ -10,9 +10,16 @@ const CARD_SIZE = 120;
 const ICON_COUNT = 16;
 const KINDS = Array.from({ length: ICON_COUNT }, (_, i) => `icon${i + 1}`);
 const KIND_BG_COLORS = [
-  "#f8d7da", "#d1ecf1", "#d4edda", "#fff3cd", "#d6d8db", "#cce5ff",
-  "#f5c6cb", "#b8daff", "#fefefe", "#e2e3e5", "#d6d8d8", "#f5c6cb",
-  "#b8daff", "#fefefe", "#e2e3e5", "#d6d8d8"
+  "#ffb3b3", "#ffd0a0", "#fff0a0", "#b3eac0",
+  "#aad4f5", "#e0aaee", "#f9bdd0", "#a8eedc",
+  "#bec8fa", "#ffc2c2", "#b3e8f5", "#d4eeaa",
+  "#ffe9a0", "#ecc5f5", "#b8dcf9", "#a0e8d4"
+];
+const KIND_BORDER_COLORS = [
+  "#e07070", "#e09050", "#c8b030", "#60b870",
+  "#5090c8", "#a060c0", "#d070a0", "#40b090",
+  "#6070d0", "#e07070", "#3090b0", "#80a030",
+  "#c0a030", "#a050c0", "#5090c8", "#30a080"
 ];
 // --- END NEW ---
 
@@ -20,9 +27,14 @@ const rand = (n) => Math.floor(Math.random() * n);
 const shuffle = (arr) => { for (let i = arr.length - 1; i > 0; i--) { const j = rand(i + 1); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; };
 function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){ h=((h<<5)-h)+s.charCodeAt(i); h|=0;} return Math.abs(h); }
 function pickBgColorByKind(kind){
-  if (!kind) return "#cccccc"; // Fallback for safety
+  if (!kind) return "#cccccc";
   const index = parseInt(kind.replace('icon', ''), 10) - 1;
   return KIND_BG_COLORS[index % KIND_BG_COLORS.length];
+}
+function pickBorderColorByKind(kind){
+  if (!kind) return "#999999";
+  const index = parseInt(kind.replace('icon', ''), 10) - 1;
+  return KIND_BORDER_COLORS[index % KIND_BORDER_COLORS.length];
 }
 
 const IMG_CACHE = {}; // { kind: {img, ok} }
@@ -244,14 +256,9 @@ class Game {
     for (let i = 0; i < all.length; i++) {
       for (let j = i + 1; j < all.length; j++) {
         const a = all[i], b = all[j];
-        // 添加容差阈值，避免浮点数误差导致的微小重叠误判
-        const tolerance = 2; // 2像素容差
-        // 只有当两个卡片的距离超过tolerance时，才认为它们不重叠
-        const overlap = !(a.x + a.w <= b.x - tolerance || 
-                         b.x + b.w <= a.x - tolerance || 
-                         a.y + a.h <= b.y - tolerance || 
-                         b.y + b.h <= a.y - tolerance);
-        if (overlap) a.coveredBy++;
+        const ox = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+        const oy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+        if (ox > 0 && oy > 0 && (ox * oy) / (a.w * a.h) >= 0.1) a.coveredBy++;
       }
     }
   }
@@ -528,8 +535,8 @@ class Game {
       ctx.beginPath();
       ctx.roundRect(Math.floor(c.x)+0.5, Math.floor(c.y)+0.5, c.w, c.h, 8);
       ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.15)"; // 使用带透明度的深色边框
-      ctx.lineWidth = 2; // 加粗到 2 像素
+      ctx.strokeStyle = "rgba(0,0,0,0.35)";
+      ctx.lineWidth = 6;
       ctx.stroke();
       // content: per-kind image
       if (face) {
@@ -572,7 +579,8 @@ class Game {
     };
     const all = [...this.cards, ...this.blinds].filter(c => !c.removed && c.area !== "slot");
     all.sort((a, b) => a.z - b.z);
-    for (const c of all) drawCard(c);
+    const visible = all.filter(c => c.coveredBy <= 9);
+    for (const c of visible) drawCard(c);
     for (const c of this.slot) drawCard(c);
     
     if (this.fail) {
