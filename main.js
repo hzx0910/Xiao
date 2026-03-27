@@ -244,8 +244,13 @@ class Game {
     for (let i = 0; i < all.length; i++) {
       for (let j = i + 1; j < all.length; j++) {
         const a = all[i], b = all[j];
-        // 恢复 AABB 碰撞检测：只要有任何重叠，a 就被 b 遮挡
-        const overlap = !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+        // 添加容差阈值，避免浮点数误差导致的微小重叠误判
+        const tolerance = 2; // 2像素容差
+        // 只有当两个卡片的距离超过tolerance时，才认为它们不重叠
+        const overlap = !(a.x + a.w <= b.x - tolerance || 
+                         b.x + b.w <= a.x - tolerance || 
+                         a.y + a.h <= b.y - tolerance || 
+                         b.y + b.h <= a.y - tolerance);
         if (overlap) a.coveredBy++;
       }
     }
@@ -630,6 +635,13 @@ class Game {
   }
   onWin() {
     this.toast("通关成功！");
+    // 如果是第一关，延迟后自动开始第二关
+    if (this.level === 1) {
+      setTimeout(() => {
+        this.setupLevel(2);
+        this.toast("第二关开始！");
+      }, 1500);
+    }
   }
   checkWin() {
     if (this.win) return;
